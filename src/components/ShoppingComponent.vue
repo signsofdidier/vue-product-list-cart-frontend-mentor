@@ -7,10 +7,10 @@ import products from '@/data.json'
   <main class="w-full min-h-screen bg-rose-50">
     <section class="container mx-auto p-20">
       <div class="grid grid-cols-12 gap-10">
-        <div class="col-span-8">
-          <h2 class="text-4xl font-bold">Desserts</h2>
+        <div class="col-span-12 lg:col-span-7 xl:col-span-8">
+          <h2 class="text-4xl font-bold text-rose-900">Desserts</h2>
           <!-- Product Cards -->
-          <div class="grid grid-cols-3 gap-6 mt-8">
+          <div class="grid grid-cols-1 md:grid-cols-2 xl:grid-cols-3 gap-6 mt-8">
             <div v-for="product in products" :key="product.id" class="card">
               <!-- card image -->
               <div class="">
@@ -35,9 +35,9 @@ import products from '@/data.json'
           </div>
         </div>
         <!-- Cart -->
-        <div class="col-span-4 bg-gray-100 rounded-xl">
+        <div class="col-span-12 lg:col-span-5 xl:col-span-4 bg-gray-100 rounded-xl">
           <div class="p-6">
-            <h2>Your Cart (7)</h2>
+            <h2 class="text-2xl font-bold text-red">Your Cart (7)</h2>
             <div>
               <h3>Classic Tiramisu</h3>
             </div>
