@@ -1,6 +1,8 @@
 <script setup>
 import { useCartModalStore } from '@/stores/CartModalStore'
+import { useCartStore } from '@/stores/cartStore'
 const cartModalStore = useCartModalStore()
+const cartStore = useCartStore()
 
 import addToCartIcon from '@/assets/images/icon-add-to-cart.svg'
 import carbonNeutralIcon from '@/assets/images/icon-carbon-neutral.svg'
@@ -29,7 +31,11 @@ const isInCart = ref(false)
                 <!-- card image -->
                 <div
                   class="overflow-hidden rounded-xl"
-                  :class="isInCart ? 'border-3 border-red' : 'border-3 border-transparent'"
+                  :class="
+                    cartStore.itemInCart(product.id)
+                      ? 'border-3 border-red'
+                      : 'border-3 border-transparent'
+                  "
                 >
                   <img
                     class="aspect-square rounded-xl group-hover:scale-110 transition-all duration-400 ease-in-out"
@@ -39,22 +45,24 @@ const isInCart = ref(false)
                 </div>
 
                 <!-- items quantity -->
-                <div v-if="isInCart" class="add-to-cart -mt-7 relative">
+                <div v-if="cartStore.itemInCart(product.id)" class="add-to-cart -mt-7 relative">
                   <button
                     class="flex items-center justify-between bg-red rounded-full px-4 py-3 gap-2 border border-red mx-auto space-x-9"
                   >
                     <!-- decrement -->
                     <button
+                      @click="cartStore.decrementCartItem(product.id)"
                       class="w-5 h-5 flex items-center justify-center border border-white rounded-full cursor-pointer"
                     >
                       <img :src="decrementIcon" alt="decrement icon" />
                     </button>
 
                     <!-- item quantity -->
-                    <p class="text-white">4</p>
+                    <p class="text-white">{{ cartStore.cartItemQuantity(product.id) }}</p>
 
                     <!-- increment -->
                     <button
+                      @click="cartStore.incrementCartItem(product.id)"
                       class="w-5 h-5 flex items-center justify-center border border-white rounded-full cursor-pointer"
                     >
                       <img :src="incrementIcon" alt="increment icon" />
@@ -65,6 +73,7 @@ const isInCart = ref(false)
                 <!-- product add to cart button -->
                 <div v-else class="add-to-cart -mt-7 relative">
                   <button
+                    @click="cartStore.addToCart(product)"
                     class="flex items-center justify-center bg-white rounded-full px-6 py-3 gap-2 font-semibold text-rose-900 border border-rose-900 mx-auto hover:text-red transition-all duration-300 cursor-pointer"
                   >
                     <span><img class="w-[26px]" :src="addToCartIcon" alt="add to cart icon" /></span
@@ -85,7 +94,9 @@ const isInCart = ref(false)
         <!-- Cart -->
         <div class="col-span-12 lg:col-span-5 xl:col-span-4 rounded-xl">
           <div class="p-6 bg-white rounded-xl">
-            <h2 class="text-2xl font-bold text-red mb-2">Your Cart (7)</h2>
+            <h2 class="text-2xl font-bold text-red mb-2">
+              Your Cart ({{ cartStore.cartItemsCount ? cartStore.cartItemsCount : 0 }})
+            </h2>
 
             <!-- cart product summary -->
             <CartSummary :show-thumbnail="true" />
