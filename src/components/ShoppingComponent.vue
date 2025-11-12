@@ -13,9 +13,12 @@ import CartSummary from './CartSummary.vue'
 import CartModal from './CartModal.vue'
 import products from '@/data.json'
 
-import { ref } from 'vue'
-
-const isInCart = ref(false)
+const handleConfirmOrder = () => {
+  if (cartStore.cartItemsCount > 0) {
+    cartStore.confirmOrder()
+    cartModalStore.toggleModal()
+  }
+}
 </script>
 
 <template>
@@ -46,8 +49,8 @@ const isInCart = ref(false)
 
                 <!-- items quantity -->
                 <div v-if="cartStore.itemInCart(product.id)" class="add-to-cart -mt-7 relative">
-                  <button
-                    class="flex items-center justify-between bg-red rounded-full px-4 py-3 gap-2 border border-red mx-auto space-x-9"
+                  <div
+                    class="w-43 flex items-center justify-between bg-red rounded-full px-4 py-3 gap-2 border border-red mx-auto"
                   >
                     <!-- decrement -->
                     <button
@@ -67,7 +70,7 @@ const isInCart = ref(false)
                     >
                       <img :src="incrementIcon" alt="increment icon" />
                     </button>
-                  </button>
+                  </div>
                 </div>
 
                 <!-- product add to cart button -->
@@ -111,7 +114,7 @@ const isInCart = ref(false)
 
             <!-- Confirm Order Button -->
             <div class="mt-5">
-              <ConfirmBtn @click="cartModalStore.toggleModal">Confirm Order</ConfirmBtn>
+              <ConfirmBtn @click="handleConfirmOrder()">Confirm Order</ConfirmBtn>
             </div>
           </div>
         </div>
